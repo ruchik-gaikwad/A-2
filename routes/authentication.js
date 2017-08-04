@@ -28,8 +28,25 @@ res.json({success : false, message: 'You Must Provide an email'})
                     res.json({success : false, message: 'Username or Email Already exists'});
 
                    }else {
-                     res.json({success : false, message: 'User Cannot be Saved, Error:', err});
-                        }
+                          if (err.errors) {
+                            if (err.errors.email) {
+                              res.json({success: false, message:err.errors.email.message});
+                            }else {
+                              if (err.errors.username) {
+                                res.json({success: false, message: err.errors.username.message});
+                              }else {
+                                    if(err.errors.password){
+                                        res.json({success: false, message:err.errors.password.message })
+                                      } else {
+                                        res.json({success: false, message: err});
+                                      }
+                                  }
+                            }
+
+                          }else {
+                                  res.json({success:false, message: 'Could not save user. Error:', err});
+                              }
+                            }
 
 
                   }else {
